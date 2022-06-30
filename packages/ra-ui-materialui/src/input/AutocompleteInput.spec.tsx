@@ -474,34 +474,6 @@ describe('<AutocompleteInput />', () => {
         expect(setFilter).toHaveBeenCalledWith('');
     });
 
-    it('should allow customized rendering of suggesting item', () => {
-        const SuggestionItem = props => {
-            const record = useRecordContext();
-            return <div {...props} aria-label={record && record.name} />;
-        };
-
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        optionText={<SuggestionItem />}
-                        matchSuggestion={() => true}
-                        inputText={record => record?.name}
-                        choices={[
-                            { id: 1, name: 'bar' },
-                            { id: 2, name: 'foo' },
-                        ]}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-
-        const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.focus(input);
-        expect(screen.queryByLabelText('bar')).not.toBeNull();
-    });
-
     it('should throw an error if no inputText was provided when the optionText returns an element', () => {
         const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
         const SuggestionItem = props => {
